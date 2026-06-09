@@ -48,6 +48,29 @@ async def upload_file(file: UploadFile):
 
     return {"mensaje": "Archivo recibido y subido a S3", "filename": filename, "size": size}
 
+@app.get('/api/files')
+def files():
+    bucket_name = os.getenv("s3_bucket")
+    try:
+        response = s3_client.list_objects_v2(Bucket=bucket_name)
+        archivos = []
+        if 'Contents' in response:
+            for obj in response['Contents']:
+                url = s3_client.generate_presigned_url(
+                    'get_object',
+                    Params={'Bucket': bucket_name, 'Key': obj['Key']},
+                    ExpiresIn=3600
+                )
+                archivos.append({
+                    "name": obj['Key'],
+                    "size": obj['Size'],
+                    "last_modified": obj['LastModified'].isoformat(),
+                    "url_aws": url
+                })
+        return {"mensaje": "Archivos listados correctamente", "archivos": archivos}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error al obtener archivos de S3: {str(e)}")
+
 @app.get("/healthz")
 def health_check():
     try:
