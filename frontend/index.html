@@ -1,13 +1,60 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>frontend</title>
+    <title>ArchivaCloud</title>
+    <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
+    <div class="container">
+      <header class="page-header">
+        <h1>ArchivaCloud</h1>
+        <button type="button" class="btn btn-primary">Subir Archivo</button>
+        <h2>Descarga y subida de archivos</h2>
+      </header>
+
+      <main>
+        <section class="table-card">
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>Nombre</th>
+                  <th>Tamaño</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>ejemplo 1</td>
+                  <td>1.2 MB</td>
+                  <td class="actions-cell">
+                    <button type="button" class="btn btn-link">Descargar</button>
+                    <button type="button" class="btn btn-link btn-danger">Eliminar</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>ejemplo 2</td>
+                  <td>850 KB</td>
+                  <td class="actions-cell">
+                    <button type="button" class="btn btn-link">Descargar</button>
+                    <button type="button" class="btn btn-link btn-danger">Eliminar</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>ejemplo 3</td>
+                  <td>450 KB</td>
+                  <td class="actions-cell">
+                    <button type="button" class="btn btn-link">Descargar</button>
+                    <button type="button" class="btn btn-link btn-danger">Eliminar</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
   </body>
 </html>
