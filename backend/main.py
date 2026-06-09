@@ -2,10 +2,7 @@ from fastapi import FastAPI, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 import boto3
 import os
-from dotenv import load_dotenv
-
-load_dotenv()
-
+from core.config import AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_SESSION_TOKEN, AWS_REGION, S3_BUCKET
 app = FastAPI()
 
 app.add_middleware(
@@ -18,10 +15,10 @@ app.add_middleware(
 
 s3_client = boto3.client(
     "s3",
-    aws_access_key_id=os.getenv("aws_access_key_id"),
-    aws_secret_access_key=os.getenv("aws_secret_access_key"),
-    aws_session_token=os.getenv("aws_session_token"),
-    region_name=os.getenv("aws_region")
+    aws_access_key_id=AWS_ACCESS_KEY_ID,
+    aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
+    aws_session_token=AWS_SESSION_TOKEN,
+    region_name=AWS_REGION
 )
 
 @app.post("/api/upload")
@@ -39,7 +36,7 @@ async def upload_file(file: UploadFile):
     if size > 102400 or size < 1024:
         raise HTTPException(status_code=400, detail="Archivo muy grande o muy pequeño")
         
-    bucket_name = os.getenv("s3_bucket")
+    bucket_name = S3_BUCKET
     
     try:
         s3_client.upload_fileobj(file.file, bucket_name, filename)
@@ -50,7 +47,7 @@ async def upload_file(file: UploadFile):
 
 @app.get('/api/files')
 def files():
-    bucket_name = os.getenv("s3_bucket")
+    bucket_name = S3_BUCKET
     try:
         response = s3_client.list_objects_v2(Bucket=bucket_name)
         archivos = []
@@ -73,7 +70,7 @@ def files():
 
 @app.delete("/api/files/{filename}")
 def delete_file(filename: str):
-    bucket_name = os.getenv("s3_bucket")
+    bucket_name = S3_BUCKET
     try:
         s3_client.delete_object(Bucket=bucket_name, Key=filename)
         return {"mensaje": f"Archivo {filename} eliminado exitosamente de S3"}
