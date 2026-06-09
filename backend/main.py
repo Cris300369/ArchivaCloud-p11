@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import boto3
 import os
 from core.config import AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_SESSION_TOKEN, AWS_REGION, S3_BUCKET
+from routers import health
 app = FastAPI()
 
 app.add_middleware(
@@ -12,6 +13,8 @@ app.add_middleware(
     allow_methods=["POST", "GET", "DELETE"],
     allow_headers=["*"],
 )
+
+app.include_router(health.router)
 
 s3_client = boto3.client(
     "s3",
@@ -76,11 +79,3 @@ def delete_file(filename: str):
         return {"mensaje": f"Archivo {filename} eliminado exitosamente de S3"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error al borrar archivo de S3: {str(e)}")
-
-@app.get("/healthz")
-def health_check():
-    try:
-        s3_client.list_buckets()
-        return {"mensaje": "ok"}
-    except Exception as e:
-        raise HTTPException(status_code=503, detail="AWS S3 no disponible")
