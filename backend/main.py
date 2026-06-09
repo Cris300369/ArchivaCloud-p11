@@ -71,6 +71,15 @@ def files():
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error al obtener archivos de S3: {str(e)}")
 
+@app.delete("/api/files/{filename}")
+def delete_file(filename: str):
+    bucket_name = os.getenv("s3_bucket")
+    try:
+        s3_client.delete_object(Bucket=bucket_name, Key=filename)
+        return {"mensaje": f"Archivo {filename} eliminado exitosamente de S3"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error al borrar archivo de S3: {str(e)}")
+
 @app.get("/healthz")
 def health_check():
     try:
