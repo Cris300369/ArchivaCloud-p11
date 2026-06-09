@@ -11,6 +11,13 @@ def get_s3_client():
         region_name=AWS_REGION
     )
 
+def upload_file_to_s3(file_obj, filename: str):
+    s3_client = get_s3_client()
+    try:
+        s3_client.upload_fileobj(file_obj, S3_BUCKET, filename)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error al subir archivo a S3: {str(e)}")
+
 def check_s3_health():
     s3_client = get_s3_client()
     try:
