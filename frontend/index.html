@@ -5,16 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ArchivaCloud</title>
     <link rel="stylesheet" href="styles.css" />
+    <script src="script.js" defer></script>
   </head>
   <body>
-    <div class="container">
+    <div class="page">
       <header class="page-header">
         <h1>ArchivaCloud</h1>
-        <button type="button" class="btn btn-primary">Subir Archivo</button>
+        <button id="uploadButton" type="button" class="btn btn-primary">Subir Archivo</button>
         <h2>Descarga y subida de archivos</h2>
       </header>
 
       <main>
+        <input id="fileInput" type="file" accept=".mov,.mp4" hidden />
+        <div id="status" class="status"></div>
+        <div class="search-container">
+          <input id="searchInput" type="text" placeholder="Buscar archivos..." class="search-bar" />
+        </div>
         <section class="table-card">
           <div class="table-wrapper">
             <table>
@@ -25,30 +31,9 @@
                   <th>Acciones</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody id="filesTableBody">
                 <tr>
-                  <td>ejemplo 1</td>
-                  <td>1.2 MB</td>
-                  <td class="actions-cell">
-                    <button type="button" class="btn btn-link">Descargar</button>
-                    <button type="button" class="btn btn-link btn-danger">Eliminar</button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>ejemplo 2</td>
-                  <td>850 KB</td>
-                  <td class="actions-cell">
-                    <button type="button" class="btn btn-link">Descargar</button>
-                    <button type="button" class="btn btn-link btn-danger">Eliminar</button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>ejemplo 3</td>
-                  <td>450 KB</td>
-                  <td class="actions-cell">
-                    <button type="button" class="btn btn-link">Descargar</button>
-                    <button type="button" class="btn btn-link btn-danger">Eliminar</button>
-                  </td>
+                  <td colspan="3">Cargando archivos...</td>
                 </tr>
               </tbody>
             </table>

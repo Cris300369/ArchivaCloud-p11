@@ -17,8 +17,10 @@ async def upload_file(file: UploadFile):
     size = file.file.tell()
     file.file.seek(0)
     
-    if size > 102400 or size < 1024:
-        raise HTTPException(status_code=400, detail="Archivo muy grande o muy pequeño")
+    max_size = 100 * 1024 * 1024  # 100 MB
+    min_size = 1024
+    if size > max_size or size < min_size:
+        raise HTTPException(status_code=400, detail="Archivo muy grande o muy pequeño. Tamaño permitido: 1 KB - 100 MB")
         
     upload_file_to_s3(file.file, filename)
     return {"mensaje": "Archivo recibido y subido a S3", "filename": filename, "size": size}
