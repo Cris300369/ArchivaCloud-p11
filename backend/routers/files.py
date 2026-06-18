@@ -13,13 +13,8 @@ async def upload_file(file: UploadFile):
     if ext not in [".mov", ".mp4"]:
         raise HTTPException(status_code=400, detail="Archivo prohibido")
         
-    file.file.seek(0, 2)
-    size = file.file.tell()
-    file.file.seek(0)
-    
-    max_size = 100 * 1024 * 1024  # 100 MB
-    min_size = 1024
-    if size > max_size or size < min_size:
+    size = file.size or 0
+    if not (1024 <= size <= 100 * 1024 * 1024):
         raise HTTPException(status_code=400, detail="Archivo muy grande o muy pequeño. Tamaño permitido: 1 KB - 100 MB")
         
     upload_file_to_s3(file.file, filename)
@@ -27,8 +22,7 @@ async def upload_file(file: UploadFile):
 
 @router.get("/files")
 def get_files():
-    archivos = list_files_from_s3()
-    return {"mensaje": "Archivos listados correctamente", "archivos": archivos}
+    return {"mensaje": "Archivos listados correctamente", "archivos": list_files_from_s3()}
 
 @router.delete("/files/{filename}")
 def delete_file(filename: str):

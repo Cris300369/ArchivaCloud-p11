@@ -6,7 +6,6 @@ router = APIRouter(tags=["health"])
 
 @router.get("/healthz")
 def health_check():
-    if check_s3_health():
-        return {"mensaje": "ok"}
-    else:
+    if not check_s3_health():
         raise HTTPException(status_code=503, detail="AWS S3 no disponible")
+    return {"mensaje": "ok"}
