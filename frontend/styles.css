@@ -91,6 +91,14 @@ tbody tr:nth-child(even) {
   background: #fafafa;
 }
 
+tbody tr {
+  transition: background-color 0.15s ease;
+}
+
+tbody tr:hover:not(.duplicate-row) {
+  background-color: #f3f4f6;
+}
+
 .actions-cell {
   display: flex;
   gap: 8px;
@@ -101,21 +109,59 @@ tbody tr:nth-child(even) {
   background: transparent;
   color: #111;
   padding: 6px 10px;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.download-btn:hover {
+  background-color: #dcfce7;
+  color: #15803d;
+  border-color: #15803d;
+}
+
+.delete-btn:hover {
+  background-color: #fee2e2;
+  color: #b91c1c;
+  border-color: #b91c1c;
 }
 
 .status {
-  margin-bottom: 14px;
-  color: #111;
+  margin-bottom: 16px;
   font-size: 0.95rem;
-  min-height: 20px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  display: none;
+}
+
+.status.show {
+  display: block;
+  padding: 10px 14px;
+  border: 1px solid #e5e5e5;
+  background-color: #f9f9f9;
 }
 
 .status.error {
-  color: #b91c1c;
+  background-color: #fef2f2;
+  border-color: #fee2e2;
+  color: #991b1b;
 }
 
 .status.success {
-  color: #047857;
+  background-color: #f0fdf4;
+  border-color: #dcfce7;
+  color: #166534;
+}
+
+tr.duplicate-row {
+  background-color: #fee2e2 !important;
+}
+
+tr.duplicate-row:hover {
+  background-color: #fecaca !important;
+}
+
+tr.duplicate-row td {
+  color: #b91c1c;
+  border-color: #fca5a5;
 }
 
 @media (max-width: 620px) {

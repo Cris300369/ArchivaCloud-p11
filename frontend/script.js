@@ -60,8 +60,11 @@ async function uploadFile(file) {
 function setStatus(message, type) {
   statusElement.textContent = message;
   statusElement.className = "status";
-  if (type) {
-    statusElement.classList.add(type);
+  if (message) {
+    statusElement.classList.add("show");
+    if (type) {
+      statusElement.classList.add(type);
+    }
   }
 }
 
@@ -80,6 +83,7 @@ async function loadFiles() {
 
     const data = await response.json();
     const archivos = Array.isArray(data.archivos) ? data.archivos : [];
+    allFiles = archivos;
     renderFiles(archivos);
   } catch (error) {
     filesTableBody.innerHTML = `
@@ -101,12 +105,12 @@ function renderFiles(archivos) {
     return;
   }
 
-  allFiles = archivos;
-
   filesTableBody.innerHTML = archivos.map((archivo) => {
     const sizeLabel = formatBytes(archivo.size || 0);
+    const isDuplicate = archivo.duplicate === true;
+    const rowClass = isDuplicate ? 'class="duplicate-row"' : '';
     return `
-      <tr>
+      <tr ${rowClass}>
         <td>${archivo.name}</td>
         <td>${sizeLabel}</td>
         <td class="actions-cell">
